@@ -2,6 +2,7 @@ package notify
 
 import (
 	"context"
+	"log"
 
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
@@ -22,8 +23,13 @@ func (n *Notify) send(ctx context.Context, subject, message string) error {
 			continue
 		}
 
+		log.Printf("this is service: %+v", service)
+
 		service := service
 		eg.Go(func() error {
+			log.Printf("this is inside of the errgroup: %+v", service)
+			log.Printf("subject: %+v", subject)
+			log.Printf("message: %+v", message)
 			return service.Send(ctx, subject, message)
 		})
 	}
